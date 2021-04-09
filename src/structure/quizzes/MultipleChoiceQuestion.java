@@ -11,6 +11,10 @@ public class MultipleChoiceQuestion extends Question {
         this.answerOptions = new ArrayList<>();
     }
 
+    public ArrayList<MultipleChoiceAnswer> getAnswerOptions() {
+        return answerOptions;
+    }
+
     public void addAnswerOption(MultipleChoiceAnswer answerOption) {
         this.answerOptions.add(new MultipleChoiceAnswer(answerOption));
     }

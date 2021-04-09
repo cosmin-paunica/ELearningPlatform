@@ -2,6 +2,7 @@ package services;
 
 import structure.quizzes.Quiz;
 import structure.subjects.Subject;
+import structure.users.Professor;
 import structure.users.Student;
 
 import java.util.Scanner;
@@ -19,6 +20,7 @@ public class Main {
         System.out.println("1 - Show your timetable (for students)");
         System.out.println("2 - Show subjects that you are enrolled in (for students)");
         System.out.println("3 - Create a new multiple choice quiz for a subject (for professors)");
+        System.out.println("4 - Show all quizzes for a subject (for professors)");
     }
 
     public static void run() {
@@ -55,13 +57,34 @@ public class Main {
                 case (1) -> System.out.println(((Student) (service.getLoggedUser())).getTimetable());
                 case (2) -> service.showUserSubjects();
                 case (3) -> {
-                    Quiz quiz = service.createQuiz();
-                    System.out.print("Enter subject for which you want the quiz: ");
-                    Subject subject = service.findSubject(scanner.nextLine());
-                    if (subject == null)
-                        System.out.println("Subject not found!");
-                    else {
-                        subject.addQuiz(quiz);
+                    if (service.getLoggedUser() instanceof Professor) {
+                        Quiz quiz = service.createQuiz();
+                        scanner.nextLine();
+                        System.out.print("Enter subject for which you want to add the quiz: ");
+                        Subject subject = service.findSubject(scanner.nextLine());
+                        if (subject == null)
+                            System.out.println("Subject not found!");
+                        else {
+                            subject.addQuiz(quiz);
+                        }
+                    } else {
+                        System.out.println("Only professors can see the quizzes");
+                    }
+                }
+                case(4) -> {
+                    if (service.getLoggedUser() instanceof Professor) {
+                        scanner.nextLine();
+                        System.out.println("Enter subject for which you want to see the quizzes");
+                        Subject subject = service.findSubject(scanner.nextLine());
+                        if (subject == null)
+                            System.out.println("Subject not found!");
+                        else {
+                            for (Quiz quiz : subject.getQuizzes()) {
+                                System.out.println(quiz);
+                            }
+                        }
+                    } else {
+                        System.out.println("Only professors can see the quizzes");
                     }
                 }
             }

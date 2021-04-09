@@ -42,4 +42,17 @@ public class Quiz {
     public void shuffleQuestions() {
         Collections.shuffle(this.questions);
     }
+
+    @Override
+    public String toString() {
+        StringBuilder strBldr = new StringBuilder();
+        int nextQuestionNumber = 1;
+        for (Question question : this.questions) {
+            strBldr.append(Integer.toString(nextQuestionNumber++))
+                    .append(": ")
+                    .append(question.toString())
+                    .append("\n");
+        }
+        return strBldr.toString();
+    }
 }

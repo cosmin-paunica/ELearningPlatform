@@ -6,4 +6,8 @@ public abstract class Question {
     public Question(String questionText) {
         this.questionText = questionText;
     }
+
+    public String getQuestionText() {
+        return questionText;
+    }
 }
