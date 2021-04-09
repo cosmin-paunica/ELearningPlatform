@@ -13,8 +13,13 @@ public class Timetable {
         this.classes = timetable.classes;
     }
 
-    public void addClass(Class newClass) {
+    public Timetable addClass(Class newClass) {
         this.classes.add(newClass);
+        return this;
+    }
+
+    public TreeSet<Class> getClasses() {
+        return classes;
     }
 
     @Override

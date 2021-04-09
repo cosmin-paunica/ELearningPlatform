@@ -12,6 +12,7 @@ public class Quiz {
     public Quiz(LocalDateTime startDateTime, LocalDateTime finishDateTime) {
         this.setStartDateTime(startDateTime);
         this.setFinishDateTime(finishDateTime);
+        this.questions = new ArrayList<>();
     }
 
     public void setStartDateTime(LocalDateTime startDateTime) {

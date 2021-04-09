@@ -1,10 +1,19 @@
 package services;
 
+import structure.classes.Laboratory;
+import structure.classes.Lecture;
+import structure.quizzes.MultipleChoiceAnswer;
+import structure.quizzes.MultipleChoiceQuestion;
+import structure.quizzes.Quiz;
+import structure.subjects.Subject;
 import structure.users.Professor;
 import structure.users.Student;
 import structure.users.TeachingDegree;
 import structure.users.User;
 
+import java.time.DayOfWeek;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -12,6 +21,7 @@ public final class ConsoleService {
     private static ConsoleService instance = null;
     private User loggedUser;
     private ArrayList<User> users;
+    private ArrayList<Subject> subjects;
 
     public static ConsoleService getInstance() {
         if (ConsoleService.instance == null)
@@ -24,12 +34,35 @@ public final class ConsoleService {
         this.users = new ArrayList<>();
     }
 
-    private void addDummyData() {
-        this.users.add(new Student("mihai.george@s.unibuc.ro", "George", "Mihai", 2));
-        this.users.add(new Professor("bogdan.mihailescu@unibuc.ro", "Mihailescu", "Bogdan", TeachingDegree.LECTURER));
+    public User getLoggedUser() {
+        return loggedUser;
     }
 
-    private User searchUser(String email, String password) {
+    private ArrayList<Subject> createDummySubjects() {
+        ArrayList<Subject> subjects = new ArrayList<>();
+        subjects.add(
+                new Subject("Programare avansata pe obiecte")
+                .addClass(new Lecture(DayOfWeek.THURSDAY, LocalTime.of(12, 0), LocalTime.of(13, 50), (Professor)this.users.get(0)))
+                .addClass(new Laboratory(DayOfWeek.FRIDAY, LocalTime.of(12, 0), LocalTime.of(13, 50), (Professor)this.users.get(0), 243))
+                .addClass(new Laboratory(DayOfWeek.TUESDAY, LocalTime.of(18, 0), LocalTime.of(19, 50), (Professor)this.users.get(0), 242))
+        );
+        subjects.add(
+                new Subject("Inteligenta artificiala")
+                .addClass(new Lecture(DayOfWeek.TUESDAY, LocalTime.of(12, 0), LocalTime.of(13, 50), (Professor)this.users.get(0)))
+                .addClass(new Laboratory(DayOfWeek.FRIDAY, LocalTime.of(8, 0), LocalTime.of(9, 50), (Professor)this.users.get(0), 243))
+        );
+        return subjects;
+    }
+
+    public void addDummyData() {
+        this.users.add(new Professor("bogdan.mihailescu@unibuc.ro", "Mihailescu", "Bogdan", TeachingDegree.LECTURER));
+        this.subjects = this.createDummySubjects();
+        this.users.add(new Student("mihai.george@s.unibuc.ro", "George", "Mihai", 2));
+        for (Subject subject : subjects)
+            ((Student)(this.users.get(1))).enroll(subject);
+    }
+
+    public User searchUser(String email, String password) {
         for (User user : this.users) {
             if (user.getEmail().equals(email))
                 return user;
@@ -46,10 +79,8 @@ public final class ConsoleService {
         this.loggedUser = null;
     }
 
-    public void run() {
-        this.addDummyData();
+    public void askLogIn() {
         Scanner scanner = new Scanner(System.in);
-
         do {
             System.out.print("Enter your email: ");
             String email = scanner.nextLine();
@@ -59,18 +90,49 @@ public final class ConsoleService {
             if (this.loggedUser == null)
                 System.out.println("Invalid data");
         } while (this.loggedUser == null);
+    }
 
-        System.out.println(new StringBuilder()
-                .append("Welcome, ")
-                .append(this.loggedUser.getFirstName())
-                .append(" ")
-                .append(this.loggedUser.getLastName())
-                .append("! You are logged in as a ")
-                .append(this.loggedUser instanceof Student ? "student" : "professor")
-                .append(" with email ")
-                .append(this.loggedUser.getEmail())
-                .append("\n")
-                .toString()
+    public void showUserSubjects() {
+        if (loggedUser instanceof Student) {
+            for (Subject subject : ((Student) loggedUser).getEnrolledSubjects())
+                System.out.println(subject.getName());
+        } else {
+
+        }
+    }
+
+    public Quiz createQuiz() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter start and finish date and time for the new quiz:");
+        Quiz quiz = new Quiz(
+                LocalDateTime.of(scanner.nextInt(), scanner.nextInt(), scanner.nextInt(), scanner.nextInt(), scanner.nextInt()),
+                LocalDateTime.of(scanner.nextInt(), scanner.nextInt(), scanner.nextInt(), scanner.nextInt(), scanner.nextInt())
         );
+        System.out.println("Enter number of questions");
+        int numQuestions = scanner.nextInt();
+        for (int i = 0; i < numQuestions; i++) {
+            scanner.nextLine();
+            System.out.println("Enter question text:");
+            String questionText = scanner.nextLine();
+            MultipleChoiceQuestion question = new MultipleChoiceQuestion(questionText);
+            System.out.println("Enter number of answer options: ");
+            int numAnswerOptions = scanner.nextInt();
+            for (int j = 0; j < numAnswerOptions; j++) {
+                scanner.nextLine();
+                System.out.println("Enter answer option text and 1 for true / 0 for false");
+                String answerText = scanner.nextLine();
+                boolean correctness = scanner.nextInt() == 1;
+                question.addAnswerOption(new MultipleChoiceAnswer(answerText, correctness));
+            }
+            quiz.addQuestion(question);
+        }
+        return quiz;
+    }
+
+    public Subject findSubject(String subjectName) {
+        for (Subject subject : subjects)
+            if (subject.getName().equals(subjectName))
+                return subject;
+        return null;
     }
 }

@@ -1,25 +1,21 @@
 package structure.classes;
 
-import structure.subjects.Subject;
+import structure.users.Professor;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 
 public abstract class Class implements Comparable<Class> {
-    protected Subject subject;
     protected DayOfWeek dayOfWeek;
     protected LocalTime startTime;
     protected LocalTime finishTime;
+    private Professor teachingProfessor;
 
-    public Class(Subject subject, DayOfWeek dayOfWeek, LocalTime startTime, LocalTime finishTime) {
-        this.subject = subject;
+    public Class(DayOfWeek dayOfWeek, LocalTime startTime, LocalTime finishTime, Professor teachingProfessor) {
         this.setDayOfWeek(dayOfWeek);
         this.setStartTime(startTime);
         this.setFinishTime(finishTime);
-    }
-
-    public Subject getSubject() {
-        return subject;
+        this.teachingProfessor = teachingProfessor;
     }
 
     protected void setDayOfWeek(DayOfWeek dayOfWeek) {
@@ -44,6 +40,10 @@ public abstract class Class implements Comparable<Class> {
 
     public LocalTime getFinishTime() {
         return LocalTime.of(this.finishTime.getHour(), this.finishTime.getMinute());
+    }
+
+    public Professor getTeachingProfessor() {
+        return teachingProfessor;
     }
 
     public void changeTime(DayOfWeek dayOfWeek, LocalTime startTime, LocalTime finishTime) {
