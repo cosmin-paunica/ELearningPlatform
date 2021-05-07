@@ -1,0 +1,3 @@
+user_id,user_type,email,last_name,first_name,group/degree,password
+1,professor,bogdan.mihailescu@unibuc.ro,Mihailescu,Bogdan,lecturer,45ab08cb9260d3f6fc09efa49fade3f3fcbb5c8d575e747295b2386d4b334169
+2,student,mihai.george@s.unibuc.ro,George,Mihai,2,ebfea5e70682e16e5973d674121bb115c09fd166a9a5bf6df319734473e76f76

@@ -12,8 +12,8 @@ public class Student extends EducationalUser {
     protected int group;
     protected ArrayList<Subject> enrolledSubjects;
 
-    public Student(String email, String lastName, String firstName, int group) {
-        super(email, lastName, firstName);
+    public Student(int id, String email, String lastName, String firstName, int group, String hashedPassword) {
+        super(id, email, lastName, firstName, hashedPassword);
         this.group = group;
         this.enrolledSubjects = new ArrayList<>();
     }
@@ -22,7 +22,7 @@ public class Student extends EducationalUser {
         return group;
     }
 
-    public EducationalUser enroll(Subject subject) {
+    public Student enroll(Subject subject) {
         this.enrolledSubjects.add(subject);
         return this;
     }

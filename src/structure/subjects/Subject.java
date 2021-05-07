@@ -7,14 +7,20 @@ import structure.quizzes.Quiz;
 import java.util.ArrayList;
 
 public class Subject {
+    protected int id;
     protected String name;
     protected Timetable timetable;
     protected ArrayList<Quiz> quizzes;
 
-    public Subject(String name) {
+    public Subject(int id, String name) {
+        this.id = id;
         this.name = name;
         this.timetable = new Timetable();
         this.quizzes = new ArrayList<>();
+    }
+
+    public int getId() {
+        return this.id;
     }
 
     public Subject addClass(Class newClass) {

@@ -17,21 +17,25 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public final class ConsoleService {
-    private static ConsoleService instance = null;
+public final class AppService {
+    private static AppService instance = null;
+
     private User loggedUser;
     private ArrayList<User> users;
     private ArrayList<Subject> subjects;
+    private PasswordHashService hashService;
 
-    public static ConsoleService getInstance() {
-        if (ConsoleService.instance == null)
-            ConsoleService.instance = new ConsoleService();
-        return ConsoleService.instance;
-    }
-
-    private ConsoleService() {
+    private AppService() {
         this.loggedUser = null;
         this.users = new ArrayList<>();
+        this.subjects = new ArrayList<>();
+        this.hashService = PasswordHashService.getInstance();
+    }
+
+    public static AppService getInstance() {
+        if (AppService.instance == null)
+            AppService.instance = new AppService();
+        return AppService.instance;
     }
 
     public User getLoggedUser() {
@@ -41,13 +45,13 @@ public final class ConsoleService {
     private ArrayList<Subject> createDummySubjects() {
         ArrayList<Subject> subjects = new ArrayList<>();
         subjects.add(
-                new Subject("Programare avansata pe obiecte")
+                new Subject(1, "Programare avansata pe obiecte")
                 .addClass(new Lecture(DayOfWeek.THURSDAY, LocalTime.of(12, 0), LocalTime.of(13, 50), (Professor)this.users.get(0)))
                 .addClass(new Laboratory(DayOfWeek.FRIDAY, LocalTime.of(12, 0), LocalTime.of(13, 50), (Professor)this.users.get(0), 243))
                 .addClass(new Laboratory(DayOfWeek.TUESDAY, LocalTime.of(18, 0), LocalTime.of(19, 50), (Professor)this.users.get(0), 242))
         );
         subjects.add(
-                new Subject("Inteligenta artificiala")
+                new Subject(2, "Inteligenta artificiala")
                 .addClass(new Lecture(DayOfWeek.TUESDAY, LocalTime.of(12, 0), LocalTime.of(13, 50), (Professor)this.users.get(0)))
                 .addClass(new Laboratory(DayOfWeek.FRIDAY, LocalTime.of(8, 0), LocalTime.of(9, 50), (Professor)this.users.get(0), 243))
         );
@@ -55,24 +59,44 @@ public final class ConsoleService {
     }
 
     public void addDummyData() {
-        this.users.add(new Professor("bogdan.mihailescu@unibuc.ro", "Mihailescu", "Bogdan", TeachingDegree.LECTURER));
+        this.users.add(new Professor(
+                1, "bogdan.mihailescu@unibuc.ro", "Mihailescu", "Bogdan", TeachingDegree.LECTURER, "parolaprofesor"
+        ));
         this.subjects = this.createDummySubjects();
-        this.users.add(new Student("mihai.george@s.unibuc.ro", "George", "Mihai", 2));
+        this.users.add(new Student(
+                2, "mihai.george@s.unibuc.ro", "George", "Mihai", 2, "parolastudent"
+        ));
         for (Subject subject : subjects)
             ((Student)(this.users.get(1))).enroll(subject);
     }
 
-    public User searchUser(String email, String password) {
-        for (User user : this.users) {
-            if (user.getEmail().equals(email))
+    public void addUser(User user) {
+        this.users.add(user);
+    }
+
+    public void addSubject(Subject subject) {
+        this.subjects.add(subject);
+    }
+
+    public User getUserById(int id) {
+        for (User user : this.users)
+            if (user.getId() == id)
                 return user;
-        }
+        return null;
+    }
+
+    public Subject getSubjectById(int id) {
+        for (Subject subject : subjects)
+            if (subject.getId() == id)
+                return subject;
         return null;
     }
 
     public void logIn(String email, String password) {
-        // password will be queried from csv file / database
-        this.loggedUser = this.searchUser(email, password);
+        for (User user : this.users) {
+            if (user.getEmail().equals(email) && hashService.verify(password, user.getHashedPassword()))
+                this.loggedUser = user;
+        }
     }
 
     public void logOut() {
@@ -133,6 +157,24 @@ public final class ConsoleService {
         for (Subject subject : subjects)
             if (subject.getName().equals(subjectName))
                 return subject;
+        return null;
+    }
+
+    public DayOfWeek stringToDayOfWeek(String string) {
+        if (string.equals("monday"))
+            return DayOfWeek.MONDAY;
+        if (string.equals("tuesday"))
+            return DayOfWeek.TUESDAY;
+        if (string.equals("wednesday"))
+            return DayOfWeek.WEDNESDAY;
+        if (string.equals("thursday"))
+            return DayOfWeek.THURSDAY;
+        if (string.equals("friday"))
+            return DayOfWeek.FRIDAY;
+        if (string.equals("saturday"))
+            return DayOfWeek.SATURDAY;
+        if (string.equals("sunday"))
+            return DayOfWeek.SUNDAY;
         return null;
     }
 }

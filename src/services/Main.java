@@ -5,12 +5,16 @@ import structure.subjects.Subject;
 import structure.users.Professor;
 import structure.users.Student;
 
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class Main {
-    static ConsoleService service = ConsoleService.getInstance();
+    static AppService service = AppService.getInstance();
+    static CSVReader reader = CSVReader.getInstance();
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
+        //service.addDummyData();
+        reader.loadData(service);
         run();
     }
 
@@ -24,8 +28,6 @@ public class Main {
     }
 
     public static void run() {
-        service.addDummyData();
-
         service.askLogIn();
 
         System.out.println(new StringBuilder()
@@ -47,6 +49,7 @@ public class Main {
             listOptions();
             System.out.print("Enter your option: ");
             option = scanner.nextInt();
+            System.out.println();
 
             switch (option) {
                 case (0) -> {

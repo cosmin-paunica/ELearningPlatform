@@ -1,0 +1,6 @@
+class_id,subject_id,class_type,day_of_week,start_hour,start_minute,finish_hour,finish_minute,professor_id,group?
+1,1,lecture,thursday,12,0,13,50,1
+2,1,laboratory,friday,12,0,13,50,1,243
+3,1,laboratory,tuesday,18,0,19,50,1,243
+4,2,lecture,tuesday,12,0,13,50,1
+5,2,laboratory,friday,8,0,9,50,1,243
