@@ -129,6 +129,7 @@ public final class AppService {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter start and finish date and time for the new quiz:");
         Quiz quiz = new Quiz(
+                1,
                 LocalDateTime.of(scanner.nextInt(), scanner.nextInt(), scanner.nextInt(), scanner.nextInt(), scanner.nextInt()),
                 LocalDateTime.of(scanner.nextInt(), scanner.nextInt(), scanner.nextInt(), scanner.nextInt(), scanner.nextInt())
         );

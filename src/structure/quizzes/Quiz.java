@@ -5,11 +5,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Quiz {
+    private int id;
     private LocalDateTime startDateTime;
     private LocalDateTime finishDateTime;
     ArrayList<Question> questions;
 
-    public Quiz(LocalDateTime startDateTime, LocalDateTime finishDateTime) {
+    public Quiz(int id, LocalDateTime startDateTime, LocalDateTime finishDateTime) {
+        this.id = id;
         this.setStartDateTime(startDateTime);
         this.setFinishDateTime(finishDateTime);
         this.questions = new ArrayList<>();

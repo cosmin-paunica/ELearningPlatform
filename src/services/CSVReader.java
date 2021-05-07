@@ -133,10 +133,15 @@ public class CSVReader {
         }
     }
 
+    public void loadQuizzes(AppService service) {
+
+    }
+
     public void loadData(AppService service) throws FileNotFoundException {
         loadUsers(service);
         loadSubjects(service);
         loadClasses(service);
         loadEnrollments(service);
+        loadQuizzes(service);
     }
 }

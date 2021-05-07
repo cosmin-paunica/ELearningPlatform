@@ -11,6 +11,7 @@ import java.util.Scanner;
 public class Main {
     static AppService service = AppService.getInstance();
     static CSVReader reader = CSVReader.getInstance();
+    static CSVWriter writer = CSVWriter.getInstance();
 
     public static void main(String[] args) throws FileNotFoundException {
         //service.addDummyData();
@@ -29,6 +30,7 @@ public class Main {
 
     public static void run() {
         service.askLogIn();
+        writer.writeToAudit("User logged in");
 
         System.out.println(new StringBuilder()
                 .append("Welcome, ")
@@ -55,10 +57,18 @@ public class Main {
                 case (0) -> {
                     service.logOut();
                     System.out.println("Logged out");
+                    writer.writeToAudit("User logged out");
                     service.askLogIn();
+                    writer.writeToAudit("User logged in");
                 }
-                case (1) -> System.out.println(((Student) (service.getLoggedUser())).getTimetable());
-                case (2) -> service.showUserSubjects();
+                case (1) -> {
+                    System.out.println(((Student) (service.getLoggedUser())).getTimetable());
+                    writer.writeToAudit("Printed user timetable");
+                }
+                case (2) -> {
+                    service.showUserSubjects();
+                    writer.writeToAudit("Printed subjects user is enrolled in");
+                }
                 case (3) -> {
                     if (service.getLoggedUser() instanceof Professor) {
                         Quiz quiz = service.createQuiz();
@@ -70,6 +80,7 @@ public class Main {
                         else {
                             subject.addQuiz(quiz);
                         }
+                        writer.writeToAudit("Quiz created by a professor");
                     } else {
                         System.out.println("Only professors can see the quizzes");
                     }
@@ -86,6 +97,7 @@ public class Main {
                                 System.out.println(quiz);
                             }
                         }
+                        writer.writeToAudit("Printed all quizes for a subject");
                     } else {
                         System.out.println("Only professors can see the quizzes");
                     }
