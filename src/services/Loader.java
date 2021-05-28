@@ -1,9 +1,15 @@
 package services;
 
 public interface Loader {
-    public void loadUsers(AppService service);
-    public void loadSubjects(AppService service);
-    public void loadClasses(AppService service);
-    public void loadEnrollments(AppService service);
-    public void loadData(AppService service);
+    void loadUsers(AppService service);
+    void loadSubjects(AppService service);
+    void loadClasses(AppService service);
+    void loadEnrollments(AppService service);
+
+    default void loadData(AppService service) {
+        loadUsers(service);
+        loadSubjects(service);
+        loadClasses(service);
+        loadEnrollments(service);
+    }
 }

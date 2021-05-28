@@ -4,6 +4,7 @@ import structure.classes.ClassFactory;
 import structure.subjects.Subject;
 import structure.users.EducationalUserFactory;
 import structure.users.Student;
+import structure.users.User;
 
 import java.sql.*;
 
@@ -76,11 +77,31 @@ public class DBService implements Loader, AutoCloseable {
         }
     }
 
-    public void loadData(AppService service) {
-        loadUsers(service);
-        loadSubjects(service);
-        loadClasses(service);
-        loadEnrollments(service);
+    public boolean changePassword(User user, String newHashedPassword) {
+        try {
+            PreparedStatement statement = connection.prepareStatement(
+                    "UPDATE customers SET password=? WHERE user_id=?"
+            );
+            statement.setString(1, newHashedPassword);
+            return statement.executeUpdate() == 1;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean enroll(User user, Subject subject) {
+        try {
+            PreparedStatement statement = connection.prepareStatement(
+                    "INSERT INTO enrollments VALUES (?, ?)"
+            );
+            statement.setInt(1, user.getId());
+            statement.setInt(2, subject.getId());
+            return statement.executeUpdate() == 1;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public void close() throws SQLException {

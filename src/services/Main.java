@@ -5,7 +5,6 @@ import structure.subjects.Subject;
 import structure.users.Professor;
 import structure.users.Student;
 
-import java.io.FileNotFoundException;
 import java.sql.SQLException;
 import java.util.Scanner;
 
@@ -13,21 +12,21 @@ public class Main {
     static AppService service;
     static CSVReader reader;
     static AuditWriter writer;
-    static DBService db;
+    static DBService dbService;
 
     static {
         service = AppService.getInstance();
         reader = CSVReader.getInstance();
         writer = AuditWriter.getInstance();
         try {
-            db = DBService.getInstance();
+            dbService = DBService.getInstance();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
     }
 
-    public static void main(String[] args) throws FileNotFoundException {
-        db.loadData(service);
+    public static void main(String[] args) {
+        dbService.loadData(service);
         run();
     }
 
@@ -86,7 +85,7 @@ public class Main {
                         Quiz quiz = service.createQuiz();
                         scanner.nextLine();
                         System.out.print("Enter subject for which you want to add the quiz: ");
-                        Subject subject = service.findSubject(scanner.nextLine());
+                        Subject subject = service.getSubjectByName(scanner.nextLine());
                         if (subject == null)
                             System.out.println("Subject not found!");
                         else {
@@ -101,7 +100,7 @@ public class Main {
                     if (service.getLoggedUser() instanceof Professor) {
                         scanner.nextLine();
                         System.out.println("Enter subject for which you want to see the quizzes");
-                        Subject subject = service.findSubject(scanner.nextLine());
+                        Subject subject = service.getSubjectByName(scanner.nextLine());
                         if (subject == null)
                             System.out.println("Subject not found!");
                         else {

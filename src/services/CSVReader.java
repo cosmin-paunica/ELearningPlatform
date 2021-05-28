@@ -84,7 +84,7 @@ public class CSVReader implements Loader {
                 String[] classArray = row.split(",");
                 Subject subject = service.getSubjectById(Integer.parseInt(classArray[1]));
                 String classType = classArray[2].toLowerCase();
-                DayOfWeek dayOfWeek = service.stringToDayOfWeek(classArray[3].toLowerCase());
+                DayOfWeek dayOfWeek = DayOfWeek.valueOf(classArray[3].toUpperCase());
                 Class newClass = null;
                 if (classType.equals("lecture")) {
                     newClass = new Lecture(
@@ -130,12 +130,5 @@ public class CSVReader implements Loader {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public void loadData(AppService service) {
-        loadUsers(service);
-        loadSubjects(service);
-        loadClasses(service);
-        loadEnrollments(service);
     }
 }

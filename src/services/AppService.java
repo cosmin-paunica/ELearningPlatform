@@ -154,28 +154,10 @@ public final class AppService {
         return quiz;
     }
 
-    public Subject findSubject(String subjectName) {
+    public Subject getSubjectByName(String subjectName) {
         for (Subject subject : subjects)
             if (subject.getName().equals(subjectName))
                 return subject;
-        return null;
-    }
-
-    public DayOfWeek stringToDayOfWeek(String string) {
-        if (string.equals("monday"))
-            return DayOfWeek.MONDAY;
-        if (string.equals("tuesday"))
-            return DayOfWeek.TUESDAY;
-        if (string.equals("wednesday"))
-            return DayOfWeek.WEDNESDAY;
-        if (string.equals("thursday"))
-            return DayOfWeek.THURSDAY;
-        if (string.equals("friday"))
-            return DayOfWeek.FRIDAY;
-        if (string.equals("saturday"))
-            return DayOfWeek.SATURDAY;
-        if (string.equals("sunday"))
-            return DayOfWeek.SUNDAY;
         return null;
     }
 }

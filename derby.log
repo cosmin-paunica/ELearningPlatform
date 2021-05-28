@@ -1,6 +1,6 @@
 ----------------------------------------------------------------
-Fri May 28 09:22:29 EEST 2021:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.15.2.0 - (1873585): instance a816c00e-0179-b1a3-70c4-00000f497998 
+Fri May 28 10:20:11 EEST 2021:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.15.2.0 - (1873585): instance a816c00e-0179-b1d8-42f5-00000f493388 
 on database directory D:\Facultate\Anul II\Semestrul 2\Programare avansata pe obiecte\Laborator\ELearningPlatform\elearningplatformDB with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@3764951d 
 Loaded from file:/D:/Kit/db-derby-10.15.2.0-lib/lib/derby.jar
 java.vendor=Oracle Corporation
