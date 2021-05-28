@@ -6,16 +6,28 @@ import structure.users.Professor;
 import structure.users.Student;
 
 import java.io.FileNotFoundException;
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class Main {
-    static AppService service = AppService.getInstance();
-    static CSVReader reader = CSVReader.getInstance();
-    static CSVWriter writer = CSVWriter.getInstance();
+    static AppService service;
+    static CSVReader reader;
+    static AuditWriter writer;
+    static DBService db;
+
+    static {
+        service = AppService.getInstance();
+        reader = CSVReader.getInstance();
+        writer = AuditWriter.getInstance();
+        try {
+            db = DBService.getInstance();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
 
     public static void main(String[] args) throws FileNotFoundException {
-        //service.addDummyData();
-        reader.loadData(service);
+        db.loadData(service);
         run();
     }
 

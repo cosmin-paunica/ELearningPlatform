@@ -6,6 +6,8 @@ import structure.classes.Seminar;
 import structure.classes.Timetable;
 import structure.subjects.Subject;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class Student extends EducationalUser {
@@ -15,6 +17,18 @@ public class Student extends EducationalUser {
     public Student(int id, String email, String lastName, String firstName, int group, String hashedPassword) {
         super(id, email, lastName, firstName, hashedPassword);
         this.group = group;
+        this.enrolledSubjects = new ArrayList<>();
+    }
+
+    public Student(ResultSet dbResult) throws SQLException {
+        super(
+                dbResult.getInt("user_id"),
+                dbResult.getString("email"),
+                dbResult.getString("last_name"),
+                dbResult.getString("first_name"),
+                dbResult.getString("password")
+        );
+        this.group = dbResult.getInt("group_number");
         this.enrolledSubjects = new ArrayList<>();
     }
 

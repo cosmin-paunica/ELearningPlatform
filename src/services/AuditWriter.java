@@ -4,18 +4,18 @@ import java.io.FileWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class CSVWriter {
-    private static CSVWriter instance = null;
+public class AuditWriter {
+    private static AuditWriter instance = null;
 
     private final String csvDirPath = "D:\\Facultate\\Anul II\\Semestrul 2\\Programare avansata pe obiecte\\Laborator\\ELearningPlatform\\res\\csv\\";
 
-    private CSVWriter() {}
+    private AuditWriter() {}
 
-    public static CSVWriter getInstance() {
-        if (CSVWriter.instance == null) {
-            CSVWriter.instance = new CSVWriter();
+    public static AuditWriter getInstance() {
+        if (AuditWriter.instance == null) {
+            AuditWriter.instance = new AuditWriter();
         }
-        return CSVWriter.instance;
+        return AuditWriter.instance;
     }
 
     public void writeToAudit(String action) {

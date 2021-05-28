@@ -10,13 +10,12 @@ import structure.users.Student;
 import structure.users.TeachingDegree;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.Locale;
 
-public class CSVReader {
+public class CSVReader implements Loader {
     private static CSVReader instance = null;
 
     private final String csvDirPath = "D:\\Facultate\\Anul II\\Semestrul 2\\Programare avansata pe obiecte\\Laborator\\ELearningPlatform\\res\\csv\\";
@@ -40,7 +39,7 @@ public class CSVReader {
         }
     }
 
-    public void loadUsers(AppService service) throws FileNotFoundException {
+    public void loadUsers(AppService service) {
         BufferedReader userReader = this.getBufferedReader(this.csvDirPath + "users.csv");
         try {
             String row = userReader.readLine();    // line of titles
@@ -133,15 +132,10 @@ public class CSVReader {
         }
     }
 
-    public void loadQuizzes(AppService service) {
-
-    }
-
-    public void loadData(AppService service) throws FileNotFoundException {
+    public void loadData(AppService service) {
         loadUsers(service);
         loadSubjects(service);
         loadClasses(service);
         loadEnrollments(service);
-        loadQuizzes(service);
     }
 }
